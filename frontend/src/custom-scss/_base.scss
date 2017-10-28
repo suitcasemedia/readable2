@@ -1,0 +1,22 @@
+body{
+    color: #444;
+}
+h2,h3,h4{
+    color: $purple;
+}
+.fa{
+    color: $yellow;
+}
+
+a  .fa {
+    color: $yellow;
+    &:hover{
+        color: $purple;
+    }
+    &--purple {
+        color: $purple;
+        &:hover{
+            color: $yellow;
+        }
+    }
+}

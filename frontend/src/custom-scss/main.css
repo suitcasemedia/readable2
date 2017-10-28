@@ -1,0 +1,21 @@
+body {
+  color: #444; }
+
+h2, h3, h4 {
+  color: #613d7c; }
+
+.fa {
+  color: #ffd500; }
+
+a .fa {
+  color: #ffd500; }
+  a .fa:hover {
+    color: #613d7c; }
+  a .fa--purple {
+    color: #613d7c; }
+    a .fa--purple:hover {
+      color: #ffd500; }
+
+button {
+  background-color: #613d7c;
+  color: #ffd500; }
