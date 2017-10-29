@@ -1,4 +1,6 @@
+import {v4 } from 'node-uuid';
 const api = "http://localhost:3001"
+
 
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token = localStorage.token
@@ -14,7 +16,31 @@ const headers = {
 export const fetchPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
-    .then(data => data.posts)
+    
+
+export const fetchCategories = () =>
+fetch(`${api}/categories`, { headers })
+  .then(res => res.json())
+ 
+  export const createPost = (post) =>
+  fetch(`${api}/posts`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    
+    body: JSON.stringify({
+
+      
+      id:  v4() ,
+      timestamp : Date.now(),
+      title: post.title,
+      body: post.body,
+      author : post.author,
+      category : post.category,
+        })
+  }).then(res => res.json())
 
 /*
 export const get = (Id) =>
@@ -24,15 +50,7 @@ fetch(`${api}/books/${bookId}`, { headers })
 
       
 
-export const update = (book, shelf) =>
-  fetch(`${api}/books/${book.id}`, {
-    method: 'PUT',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ shelf })
-  }).then(res => res.json())
+
 
 export const search = (query, maxResults) =>
   fetch(`${api}/search`, {

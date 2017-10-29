@@ -2,26 +2,73 @@ import React, {Component} from 'react'
 import Header from './header'
 import Categories from './categories' ;
 import PostListItem  from './post-list-item';
-import {fetchPosts , receivePosts} from '../actions';
+import {deepEquals} from 'deep-equals'
+import {
+    fetchPosts ,
+    fetchCategories,
+    createPost
+   
+    } from '../actions';
 import {connect} from 'react-redux'
  
-
 class PostList extends Component {
+   
     componentDidMount() {
-        const { fetchPosts } = this.props;
-        fetchPosts();
+       
+        const { fetchPosts , fetchCategories} = this.props;
+       fetchPosts();
+        fetchCategories();
+       
+      
     }
- //  dispatch(addComments(normalizer(comments))); 
     
-    render(){
-        console.log('props are ',this.props)
+    componentWillReceiveProps(nextProps ,nextState){
+        if(this.props.posts !== nextProps.posts  ){
+            //this.props.fetchPosts()
+            return true
+        }
+        return true
+    }
+    
+    
+    shouldComponentUpdate(newProps, newState) {
+        if(this.props.posts !== newProps.posts){
+         // this.props.fetchPosts()
+          return true
+        }
         
-     
+    }
 
+    
+    
+    
+
+
+    
+    state={
+        newPosts :  0
+    }
+   
+
+    update=()=>{
+        const newNo = this.state.newPosts + 1
+        this.setState(() => ({
+           newPosts : newNo
+          }))
+          this.forceUpdate()
+    }
+    
+ //  dispatch(addComments(normalizer(comments))); 
+   
+    render(){
+       // this.props.fetchPosts()
+        const { posts, categories} = this.props;
         return(
             <div>
-                <Header/>
-               
+                <Header newPost={(data)=>{
+                    this.props.newPost(data)
+                    this.update()}} />
+                
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-md-2 col-xs-12">
@@ -29,7 +76,28 @@ class PostList extends Component {
                          </div>
                         <div className="col-md-10 col-xs-12">
                             <div className="row">
-                                <PostListItem/>
+                                { posts ?
+                                     posts.map((post)=>{return(
+                                         <PostListItem
+                                            
+                                            key={post.id}
+                                            title={post.title}
+                                            edit={this.editPost}
+                                            delete={this.deletePost}
+                                            upVote={this.voteUp}
+                                            downVote={this.downVote}
+                                            commentCount={post.commentCount}
+                                            voteScore={post.voteScore}
+                                            author={post.author}
+                                            category={post.category}
+                                            body={post.body}
+                                            id={post.id}
+                                            timestamp={post.timestamp}
+                                            
+                                            />
+                                         )} )
+                                 : ''}
+                                
                                 
                             </div>
                         </div>
@@ -46,15 +114,18 @@ class PostList extends Component {
 
 function mapDispatchToProps(dispatch){
     return{
-      dispatch,
-      fetchPosts,
-      receivePosts
+      newPost :(data) => dispatch(createPost(data)),
+      fetchPosts : ()=> dispatch(fetchPosts()),
+      fetchCategories :()=> dispatch(fetchCategories()),
+      
     }
   
   }
-  function mapStateToProps({posts, comments}){
-    
-   return{posts, comments}
+
+  function mapStateToProps({posts, categories}){
+   
+   return{posts : posts.posts ,
+          categories : categories.categories}
       
   }
   export default connect(mapStateToProps, mapDispatchToProps)(PostList);

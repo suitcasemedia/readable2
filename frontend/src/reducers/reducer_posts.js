@@ -1,10 +1,18 @@
-import {RECEIVE_POSTS} from '../actions' ;
+import {RECEIVE_POSTS , NEW_POST} from '../actions' ;
 //maybe import lodash
 export default function(state = {}, action){
     switch (action.type){
         case RECEIVE_POSTS:
+            const {posts} = action;
             return {
-                state: action.posts
+                ...state, posts
+            }
+        case NEW_POST:
+            const {post} = action;
+            const {id} = post ;
+            return {
+                ...state,
+                    [id] : post
             }
         default:
             return state;

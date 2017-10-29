@@ -1,0 +1,8 @@
+// should already be in bootstrap but not coming through
+.is-invalid{
+    border-color  : $red;
+}
+
+.invalid-feedback{
+    color: $red;
+}
