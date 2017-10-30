@@ -20,16 +20,33 @@ export default function(state = {}, action){
                 posts: [ ...posts, post ],
             }
         }
-        case  POST_VOTE:
+        case  POST_VOTE:{
             const { id ,option , newScore } = action
             const {posts} = state;
-            
-           console.log("the id is ", action.id) // this gives the whole post!
-           console.log("the option is ", action.option) // this gives undefined
-        
-           console.log("the newScore is ", action.newScore) // this gives undefined
            
-        
+            posts.map(post =>{
+               
+                if(post.id !== id){
+                   
+                    return{
+                        state,
+                       
+                        
+                    }
+                }
+                console.log("ready to change state")
+                console.log("post.id is,", post.id)
+                console.log("id is,", id)
+                console.log("voteScore id ",post.voteScore)
+                console.log("action score is ",newScore)
+                    return{
+                        ...state, posts:[...posts, ...post , {voteScore: newScore}]
+
+                    }
+                }
+            )
+                
+        }             
         default:
             return state;
     }   
