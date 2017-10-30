@@ -22,45 +22,32 @@ export const fetchCategories = () =>
 fetch(`${api}/categories`, { headers })
   .then(res => res.json())
  
-  export const createPost = (post) =>
-  fetch(`${api}/posts`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    
-    body: JSON.stringify({
+export const createPost = (post) =>
+fetch(`${api}/posts`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },  
+  body: JSON.stringify({
+    id:  v4() ,
+    timestamp : Date.now(),
+    title: post.title,
+    body: post.body,
+    author : post.author,
+    category : post.category,
+  })
+}).then(res => res.json())
 
-      
-      id:  v4() ,
-      timestamp : Date.now(),
-      title: post.title,
-      body: post.body,
-      author : post.author,
-      category : post.category,
-        })
-  }).then(res => res.json())
+export const postVote = (id, option) =>
+fetch(`${api}/posts/${id}`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+},
+  body: JSON.stringify({
+    option 
+  })
+}).then(res => res.json())
 
-/*
-export const get = (Id) =>
-fetch(`${api}/books/${bookId}`, { headers })
-    .then(res => res.json())
-    .then(data => data.book)
-
-      
-
-
-
-export const search = (query, maxResults) =>
-  fetch(`${api}/search`, {
-    method: 'POST',
-    headers: {
-      ...headers,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query, maxResults })
-  }).then(res => res.json())
-    .then(data => data.books)
-
-*/

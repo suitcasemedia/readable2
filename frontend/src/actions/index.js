@@ -4,6 +4,7 @@ import { normalize, schema } from 'normalizr';
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
 export const NEW_POST = "NEW_POST" ;
+export const POST_VOTE = "POST_VOTE" ;
 
 export const newPost = post => ({
   type: NEW_POST,
@@ -15,11 +16,6 @@ export const createPost = post => dispatch => (
   .createPost(post)
   .then(post => dispatch(newPost(post)))
 )
-
-
-
-
-
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts 
@@ -41,6 +37,22 @@ export const fetchCategories = () => dispatch => (
       .fetchCategories()
       .then(posts => dispatch(receiveCategories(posts)))
 );
+
+export const newVote = (id, option , newScore) =>({
+    type: POST_VOTE,
+    id,
+    option,
+    newScore 
+})
+export const postVote = (id, option, newScore) => dispatch => (
+  readableAPIUtil
+      .postVote(id,option)
+      .then((id,option , newScore) => dispatch(newVote(id,option,newScore)))
+);
+
+
+
+
 /*
 export const addCommentToPost = ()=>{}
 export const addComments =() =>{}
