@@ -1,5 +1,5 @@
 // import { combineReducers} from 'redux' ;
-import post from './reducer_post'
+//import post from './reducer_post'
 import {RECEIVE_POSTS , NEW_POST ,POST_VOTE} from '../actions' ;
 //maybe import lodash
 export default function(state = {}, action){
