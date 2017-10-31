@@ -40,8 +40,7 @@ class PostList extends Component {
                                          
                                          <PostListItem
                                             
-                                            key={post.id}
-                                            index={index}
+                                            key={index}
                                             title={post.title}
                                             edit={this.editPost}
                                             delete={this.deletePost}

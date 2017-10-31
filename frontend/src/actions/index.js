@@ -46,7 +46,7 @@ export const newVote = (id, option , newScore) =>({
 })
 export const postVote = (id, option, newScore) => dispatch => (
   readableAPIUtil
-      .postVote(id,option)
+      .postVote(id,option, newScore)
       .then((id,option , newScore) => dispatch(newVote(id,option,newScore)))
 );
 

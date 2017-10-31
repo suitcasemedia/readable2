@@ -2,6 +2,7 @@ import React from 'react';
 import renderDate from '../utils/render-date';
 import {connect} from 'react-redux' ;
 import {
+    postVote,
     newVote
    
     } from '../actions';
@@ -57,7 +58,7 @@ function PostListItem(props){
 /*
 function mapDispatchToProps(dispatch){
     return{
-        newVote : (id,option , newScore)=> dispatch(postVote(id,option,newScore))
+        vote : (id,option , newScore)=> dispatch(postVote(id,option,newScore))
     }
 
 }
@@ -65,6 +66,8 @@ function mapDispatchToProps(dispatch){
 const mapDispatchToProps = {
    newVote,
   }
+
+  
 function mapStateToProps(){
 
 }

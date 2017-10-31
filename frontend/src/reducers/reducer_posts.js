@@ -24,28 +24,15 @@ export default function(state = {}, action){
             const { id ,option , newScore } = action
             const {posts} = state;
            
-            posts.map(post =>{
-               
-                if(post.id !== id){
-                   
-                    return{
-                        state,
-                       
-                        
-                    }
+           const newPosts =  posts.map(post =>{
+                if(post.id === id){
+                    return{...post,voteScore:newScore}
+                    
                 }
-                console.log("ready to change state")
-                console.log("post.id is,", post.id)
-                console.log("id is,", id)
-                console.log("voteScore id ",post.voteScore)
-                console.log("action score is ",newScore)
-                    return{
-                        ...state, posts:[...posts, ...post , {voteScore: newScore}]
+                return post;
 
-                    }
-                }
-            )
-                
+            })        
+            return{...state,posts: newPosts}   
         }             
         default:
             return state;
