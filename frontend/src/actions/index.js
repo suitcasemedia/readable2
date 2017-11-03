@@ -10,6 +10,8 @@ export const SORT_POST_BY = "SORT_POST_BY";
 export const SET_CATEGORY = "SET_CATEGORY";
 export const EDIT_POST = "EDIT_POST";
 export const RECEIVE_POST = "RECEIVE_POST";
+export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
+export const POST_DETAIL_VOTE = "POST_DETAIL_VOTE";
 
 
 export const receivePost = post => ({
@@ -22,10 +24,6 @@ export const fetchPost = (id) => dispatch => (
       .then(post => dispatch(receivePost(post)))
 );
 
-
-
-
-
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts 
@@ -35,6 +33,19 @@ export const fetchPosts = () => dispatch => (
       .fetchPosts()
       .then(posts => dispatch(receivePosts(posts)))
 );
+
+
+
+export const receiveComments = comments => ({
+  type: RECEIVE_COMMENTS,
+  comments
+});
+export const fetchComments = (id) => dispatch => (
+  readableAPIUtil
+      .fetchComments(id)
+      .then(comments => dispatch(receiveComments(comments)))
+);
+
 
 
 export const newPost = post => ({
@@ -77,20 +88,20 @@ export const setActiveCategory = (category)=> dispatch =>({
       type: SET_CATEGORY,
       category   
 });
-export const newVote = (id, option , newScore) =>
+export const newVote = (id, option , newScore,type) =>
 ({
-    type: POST_VOTE,
+    type,
     id,
     option,
     newScore 
 })
 
-export const postVote = (id, option, newScore) => dispatch =>{
+export const postVote = (id, option, newScore, type) => dispatch =>{
 
 (
   readableAPIUtil
       .postVote(id,option, newScore)
-      .then(() => dispatch(newVote(id,option,newScore)))
+      .then(() => dispatch(newVote(id,option,newScore,type)))
 );
 }
 

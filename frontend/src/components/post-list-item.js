@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import Loading  from 'react-loading';
 import EditPost from './edit-post';
 import {Link} from 'react-router-dom';
+import WidgetVoting from './widget-voting';
 import {
     postVote,
     newVote,
@@ -37,9 +38,10 @@ class PostListItem extends Component{
     render(){
         const {editPostModalOpen} = this.state
 
-
-    const {id,title,author,category,body,commentCount,voteScore,newVote,timestamp,dPost} = this.props;
-    const stringId = id.toString()
+        const {post,newVote,dPost ,key} = this.props;
+        const {id,title,author,category,body,commentCount,voteScore,timestamp} = post;
+    
+        const stringId = id.toString()
 
     return(
 
@@ -64,24 +66,7 @@ class PostListItem extends Component{
                     <i className="fa fa-comments  fa-2x  mr-2" aria-hidden="true"></i>
                     No of comments : {commentCount}
                 </p>
-                <p className="card-text">
-                    <a href="#"  className="card-link">
-                        <i onClick={(id,option)=>{
-                            const newScore = voteScore + 1;
-                            option = "upVote"
-                            newVote(stringId,"upVote" , newScore)
-        
-                        }}
-                        className="fa fa-hand-o-up fa-2x " aria-hidden="true"> </i>
-                    </a>
-                    <a href="#"   className="card-link ml-1">
-                        <i onClick={(id,option)=>{
-                            const newScore = voteScore - 1
-                            newVote(stringId,"downVote", newScore)
-                            }}  className="fa fa-hand-o-down fa-2x ml-1 mr-2  " aria-hidden="true"> </i>
-                    </a>
-                    No of votes: {voteScore}
-                </p>
+                <WidgetVoting post={post} actionType={"POST_VOTE"}/>
                 <Link to={`/post/${id}`} className="u-faux-block-link__overlay"/>
             </div>
             

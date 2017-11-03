@@ -1,4 +1,4 @@
-import {RECEIVE_POST} from '../actions' ;
+import {RECEIVE_POST,POST_DETAIL_VOTE} from '../actions' ;
 export default function (state ={},action){
     switch (action.type){
         case RECEIVE_POST:{
@@ -6,6 +6,19 @@ export default function (state ={},action){
             const {post} = action;
             return{
                 ...state, post
+            }
+        }
+        case POST_DETAIL_VOTE:{
+            const {post} = state;
+            const {voteScore} = post;
+            const {newScore} = action;
+            return{
+                ...state,
+                  post:post,
+                    voteScore:newScore
+               
+                   
+                
             }
         }
         default:

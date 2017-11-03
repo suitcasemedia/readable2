@@ -1,38 +1,85 @@
 import React ,{Component}from 'react';
 import Header from './header';
 import {connect} from 'react-redux';
-import {/*fetchComments,*/fetchPost ,createPost} from '../actions'
+import {fetchComments, fetchPost ,createPost} from '../actions';
+import WidgetVoting from './widget-voting';
 
 class Post extends Component{
 
-    componentDidMount(){
+    componentWillMount(){
         const {id} = this.props.match.params ;
         const {fetchPost ,fetchComments } = this.props ;
         fetchPost(id) ;
-      //  fetchComments(id) ;
+        fetchComments(id) ;
     }
-    renderPost(){
-           if(this.props.post.title === undefined){          
+    renderComments(comments){
+        if(comments === undefined){          
+            return <div>
+                
+                         <div className="container">Loading...</div>
+                    </div>
+        }
+        else{
+            return(
+                <div className="container">
+                    
+                   { comments.map((comment) =>{
+                       return <p>{comment.body}</p> 
+                   })}
+                </div>     
+            )
+        }   
+    }
+
+    renderPost(post){
+           if(post === undefined){          
                return <div>
                        <Header />
                             <div className="container">Loading...</div>
                        </div>
            }
+           
+          
+          
            else{
+            const {voteScore, id} = post;
                return(
-                   <div>
-                       <Header />    
-                       <h2>{this.props.post.title}where is the props?</h2>
-                       <p>{this.props.post.body}</p>
+                    <div>
+                        <Header />    
+                            <div className="container">
+                                <h2>{post.title}</h2>
+
+                                <p>{post.body}</p>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <WidgetVoting post={post} actionType={"POST_DETAIL_VOTE"}/>
+                        
+                                    </div>
+                                    <div className="col-md-4">
+                                    </div>
+                                    <div className="col-md-4">
+                                    </div>
+                    
+                                </div>
+
+                            </div>
                    </div>     
                )
            }   
        }
 
        render(){
+
+        const {post,comments} = this.props;
+       
+       // const {voteScore, id} = post;
+       // const stringId = id.toString();
            return(
            <div>
-                 {this.renderPost()}
+                 {this.renderPost( post)}
+                 {this.renderComments(comments) }
+                 
+                 
 
            </div>
            )
@@ -43,13 +90,14 @@ function mapDispatchToProps(dispatch){
     return{
         newPost: data =>dispatch(createPost(data)),
         fetchPost : (id)=> dispatch(fetchPost(id)),
-       /* fetchComments : (id)=> dispatch(fetchComments(id))*/
+       fetchComments : (id)=> dispatch(fetchComments(id))
     }
 }
-function mapStateToProps({post},ownProps){
+function mapStateToProps({post, comments},ownProps){
     
     return{
-        post,
+        comments:comments.comments,
+        post : post.post,
         id: ownProps.match.params.id
     }
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Header from './header'
 import Categories from './categories' ;
+import Loading  from 'react-loading';
 import PostListItem  from './post-list-item';
 import deepEquals from 'deep-equals';
 import sortByHelper from '../utils/sort-by-helper.js'
@@ -26,8 +27,16 @@ class PostList extends Component {
        
        
         const { posts, categories} = this.props;
-        
-        return(
+        if(posts === undefined){          
+            return <div>
+                    <Header />
+                         <div className="container">
+                             <Loading delay={200} type='spin' color='#222' className='loading' />
+                        </div>
+                    </div>
+        }
+        else{
+            return(
             <div>
                 <Header newPost={(data)=>{
                     this.props.newPost(data)
@@ -45,19 +54,9 @@ class PostList extends Component {
                                          return(
                                          
                                          <PostListItem
-                                            
-                                            key={index}
-                                            title={post.title}
-                                            //edit={this.editPost}
-                                            delete={this.deletePost}
-                                            commentCount={post.commentCount}
-                                            voteScore={post.voteScore}
-                                            author={post.author}
-                                            category={post.category}
-                                            body={post.body}
-                                            id={post.id}
-                                            timestamp={post.timestamp}
-                                            
+                                            post={post}
+                                            key={index} 
+                                            delete={this.deletePost}                                        
                                             />
                                          )}} )
                                  : ''}
@@ -71,6 +70,7 @@ class PostList extends Component {
                 </div>
             </div>
         )
+    }
     }
 }
 function mapDispatchToProps(dispatch){
