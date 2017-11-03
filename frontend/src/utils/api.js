@@ -16,7 +16,13 @@ const headers = {
 export const fetchPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
+    //
     
+export const fetchPost = (id) =>
+  fetch(`${api}/posts/${id}`, { headers })
+    .then(res => res.json())
+    
+      
 
 export const fetchCategories = () =>
 fetch(`${api}/categories`, { headers })
@@ -39,6 +45,21 @@ fetch(`${api}/posts`, {
   })
 }).then(res => res.json())
 
+
+export const editPost = (values,id) =>
+
+fetch(`${api}/posts/${id}`, {
+  method: 'PUT',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },  
+  body: JSON.stringify({
+    title: values.title,
+    body: values.body,  
+  })
+})//.then(res => res.json())
+
 export const postVote = (id, option) =>
 fetch(`${api}/posts/${id}`, {
   method: 'POST',
@@ -51,3 +72,13 @@ fetch(`${api}/posts/${id}`, {
   })
 }).then(res => res.json())
 
+
+
+export const postDelete = id =>
+fetch(`${api}/posts/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+},
+}).then(res => res.json())

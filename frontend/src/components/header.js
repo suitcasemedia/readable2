@@ -3,8 +3,6 @@ import Modal from 'react-modal';
 import Loading  from 'react-loading';
 import CreatePost from './create-post'
 import {Link} from 'react-router-dom'
-//import {connect} from 'react-redux'
-//import {createPost} from '../actions';
 
 class Header extends Component {
   state = {
@@ -49,7 +47,7 @@ class Header extends Component {
           contentLabel='Modal'
         >
         
-        <CreatePost   createPost={(data) =>
+        <CreatePost shutModal={()=>{this.closeCreatePostModal()}}  createPost={(data) =>
             { this.props.newPost(data)
               this.closeCreatePostModal()
              
@@ -69,7 +67,5 @@ class Header extends Component {
 
 
 
-function mapStateToProps(){
 
-}
 export  default Header  ;

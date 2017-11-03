@@ -38,6 +38,9 @@ onSubmit(values){
    // this.props.History.push('/')
 
 }
+closeModal(){
+    this.props.shutModal()
+}
 render(){
   
           const {handleSubmit} = this.props;
@@ -83,6 +86,8 @@ render(){
                   />
                  
                   <button type="submit" className="btn">Submit</button>
+                  <button type="submit" onClick={()=> this.closeModal()} className="btn ml-1">Cancel</button>  
+                       
 
                  
                 </form> 

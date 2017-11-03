@@ -5,7 +5,7 @@ import './App.css';
 import registerServiceWorker from './registerServiceWorker';
 import PostList from './components/post-list';
 import {BrowserRouter, Route ,Switch} from 'react-router-dom'
-
+import Post from './components/post';
 import {createStore, applyMiddleware, compose} from 'redux' ;
 import reducer from './reducers' ;
 import {Provider} from 'react-redux'
@@ -39,6 +39,8 @@ ReactDOM.render(
         <Switch>
       
           <Route exact path="/" component={PostList} />
+          <Route exact path="/cat/:category" component={PostList} />
+          <Route exact path="/post/:id" component={Post} />
       
         </Switch>
       </div>

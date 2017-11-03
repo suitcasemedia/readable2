@@ -1,6 +1,19 @@
 @import '../bootstrap/variables' ;
 
-button{
+button {
     background-color: $purple;
     color: $yellow;
+}
+
+.btn{
+
+    &--purple{
+        background-color: $purple;
+        color: $yellow;
+
+        a,a:visted,a:active{
+            color: $yellow;
+        }
+
+    }
 }

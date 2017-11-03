@@ -1,14 +1,11 @@
-import {POST_VOTE} from '../actions' ;
-const post = (state,action) =>{
+import {RECEIVE_POST} from '../actions' ;
+export default function (state ={},action){
     switch (action.type){
-        case POST_VOTE:{
-            const {posts} = state;
-            if(state.id !== post.id ){
-                return state
-            }
+        case RECEIVE_POST:{
+           // console.log("receive post reducer ",state)
+            const {post} = action;
             return{
-                 ...state,
-                    posts: [...posts,  { ...post, voteScore:  10} ]
+                ...state, post
             }
         }
         default:

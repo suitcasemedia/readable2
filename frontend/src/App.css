@@ -5901,6 +5901,9 @@ h2, h3, h4 {
 .fa {
   color: #ffd500; }
 
+a {
+  color: #613d7c; }
+
 a .fa {
   color: #ffd500; }
   a .fa:hover {
@@ -5914,13 +5917,20 @@ button {
   background-color: #613d7c;
   color: #ffd500; }
 
+.btn--purple {
+  background-color: #613d7c;
+  color: #ffd500; }
+  .btn--purple a, .btn--purple a:visted, .btn--purple a:active {
+    color: #ffd500; }
+
 .ReactModal__Overlay.ReactModal__Overlay--after-open.overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.75); }
+  background-color: rgba(255, 255, 255, 0.75);
+  z-index: 2; }
 
 .ReactModal__Content.ReactModal__Content--after-open.modal {
   position: absolute;
@@ -5935,6 +5945,35 @@ button {
   border-radius: 4px;
   outline: none;
   padding: 20px; }
+
+.u-faux-block-link {
+  position: relative; }
+
+.u-faux-block-link a,
+.u-faux-block-link abbr[title],
+.u-faux-block-link__promote {
+  position: relative;
+  z-index: 1; }
+
+.u-faux-block-link__overlay {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  text-indent: 200%;
+  white-space: nowrap;
+  background: transparent; }
+
+a.u-faux-block-link__overlay {
+  position: absolute;
+  z-index: 0;
+  opacity: 0; }
+  a.u-faux-block-link__overlay:focus {
+    outline: none; }
+
+.u-faux-block-link--hover .u-faux-block-link__cta {
+  text-decoration: underline; }
 
 .is-invalid {
   border-color: #d9534f; }

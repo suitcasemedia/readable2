@@ -1,19 +1,25 @@
 import React from 'react';
 import Filters from './filters' ;
+import {Link} from 'react-router-dom' ;
+import CategoryItem from './category-item';
+
 
 const Categories = (props)=>{
-
-
     return(
         <div>
-             <Filters/>
+            <Filters/>
             <h4>Select categories:</h4>      
-            <button type="button"  aria-pressed="true" className="btn btn-secondary mr-2 my-2 active">React</button>
-            <button type="button"  className="btn btn-secondary mr-2 my-2">Udacity</button>
-            <button type="button"   className="btn btn-secondary mr-2 my-2">Redux</button>
+            <CategoryItem path={"/cat/react"} currentCat={props.currentCategory} catName={"react"}/>
+            <CategoryItem path={"/cat/redux"} currentCat={props.currentCategory} catName={"redux"}/>
+            <CategoryItem path={"/cat/udacity"} currentCat={props.currentCategory} catName={"udacity"}/>
+            <Link className="button btn button--purple" to="/">Reset</Link>
         </div>  
        
     )
 }
 
-export default Categories;
+    
+  
+    
+
+export default Categories ;
