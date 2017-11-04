@@ -1,52 +1,43 @@
 import React ,{Component}from 'react';
 import Header from './header';
 import {connect} from 'react-redux';
-import {fetchComments, fetchPost ,createPost} from '../actions';
+import {fetchComments, fetchPost ,createPost} from '../actions/posts';
 import WidgetVoting from './widget-voting';
+import WidgetEditDelete from './widget-edit-delete';
+import CommentsWrapper from './comments/comments-wrapper';
 
 class Post extends Component{
-
     componentWillMount(){
         const {id} = this.props.match.params ;
         const {fetchPost ,fetchComments } = this.props ;
         fetchPost(id) ;
         fetchComments(id) ;
     }
-    renderComments(comments){
-        if(comments === undefined){          
-            return <div>
-                
-                         <div className="container">Loading...</div>
-                    </div>
-        }
-        else{
-            return(
-                <div className="container">
-                    
-                   { comments.map((comment) =>{
-                       return <p>{comment.body}</p> 
-                   })}
-                </div>     
-            )
-        }   
-    }
-
+   
     renderPost(post){
+            
            if(post === undefined){          
                return <div>
-                       <Header />
+                       <Header  actionType="POST_DETAIL_CREATE"/>
                             <div className="container">Loading...</div>
                        </div>
            }
-           
-          
-          
+           if(post.error){
+            return (
+                <div>
+                <Header  actionType="POST_DETAIL_CREATE"/>
+                     <div className="container">Sorry we couldn't find that post</div>
+                </div> 
+            ) 
+        }
            else{
-            const {voteScore, id} = post;
+            const {comments} = this.props;
+            //const {voteScore} = post;
+            //const {id} = post;
                return(
                     <div>
-                        <Header />    
-                            <div className="container">
+                        <Header redirectHome={true} actionType="POST_DETAIL_CREATE" />    
+                            <div className="container mb-5">
                                 <h2>{post.title}</h2>
 
                                 <p>{post.body}</p>
@@ -58,29 +49,33 @@ class Post extends Component{
                                     <div className="col-md-4">
                                     </div>
                                     <div className="col-md-4">
+                                        <WidgetEditDelete 
+                                            redirectHomeOnDelete={true}
+                                            editActionType={"POST_DETAIL_EDIT"}
+                                            deleteActionType={"POST_DETAIL_DELETE"} 
+                                            post={post}
+                                        />
                                     </div>
                     
                                 </div>
 
                             </div>
+                             <CommentsWrapper parentId={post.id} comments={comments} />
                    </div>     
                )
-           }   
+           } 
+           
+            
        }
 
        render(){
 
         const {post,comments} = this.props;
-       
-       // const {voteScore, id} = post;
-       // const stringId = id.toString();
            return(
            <div>
                  {this.renderPost( post)}
-                 {this.renderComments(comments) }
-                 
-                 
-
+                
+                
            </div>
            )
        }
@@ -94,7 +89,6 @@ function mapDispatchToProps(dispatch){
     }
 }
 function mapStateToProps({post, comments},ownProps){
-    
     return{
         comments:comments.comments,
         post : post.post,

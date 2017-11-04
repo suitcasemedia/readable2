@@ -1,9 +1,8 @@
 import React from 'react';
-import  {setSortPostBy} from '../actions';
+import  {setSortPostBy} from '../actions/posts';
 import {connect} from 'react-redux';
 
 const Filters = (props)=>{
-    console.log("filters function = ",props)
     return(
             <div className="clearfix mb-4" >
                 <h4 className="mb-3">Order By:</h4>

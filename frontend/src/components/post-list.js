@@ -3,16 +3,12 @@ import Header from './header'
 import Categories from './categories' ;
 import Loading  from 'react-loading';
 import PostListItem  from './post-list-item';
-import deepEquals from 'deep-equals';
 import sortByHelper from '../utils/sort-by-helper.js'
 import {
     fetchPosts ,
     fetchCategories,
-    createPost,
     setActiveCategory
-
-   
-    } from '../actions';
+    } from '../actions/posts';
 import {connect} from 'react-redux'
  
 class PostList extends Component {
@@ -26,11 +22,15 @@ class PostList extends Component {
     render(){
        
        
-        const { posts, categories} = this.props;
+        const { posts } = this.props;
+        // const {categories} = this.props;
         if(posts === undefined){          
             return <div>
-                    <Header />
-                         <div className="container">
+                        <Header 
+                            redirectHome={false}
+                            actionType={"NEW_POST"}
+                         />
+                        <div className="container">
                              <Loading delay={200} type='spin' color='#222' className='loading' />
                         </div>
                     </div>
@@ -38,9 +38,10 @@ class PostList extends Component {
         else{
             return(
             <div>
-                <Header newPost={(data)=>{
-                    this.props.newPost(data)
-                    }} />
+                <Header 
+                   redirectHome={false}
+                   actionType={"NEW_POST"}
+                 />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-md-2 col-xs-12">
@@ -54,6 +55,7 @@ class PostList extends Component {
                                          return(
                                          
                                          <PostListItem
+                                            linkButton={true}
                                             post={post}
                                             key={index} 
                                             delete={this.deletePost}                                        
@@ -75,7 +77,7 @@ class PostList extends Component {
 }
 function mapDispatchToProps(dispatch){
     return{
-      newPost :(data) => dispatch(createPost(data)),
+     
       fetchPosts : ()=> dispatch(fetchPosts()),
       fetchCategories :()=> dispatch(fetchCategories()),  
       setCat: (cat) => dispatch(setActiveCategory(cat)),

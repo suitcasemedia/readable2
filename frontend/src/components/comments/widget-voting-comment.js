@@ -1,18 +1,16 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {postVote} from '../actions/posts';
+import {commentVote} from '../../actions/comments';
 
-function WidgetVoting(props){
-       
-    WidgetVoting.PropTypes = {     
+function WidgetVotingComment(props){
+    WidgetVotingComment.PropTypes = {     
         newVote : PropTypes.func.isRequired, // can get this from dispatchToProps
-        post: PropTypes.object.isRequired, // passed from parent 
-       
+        comment: PropTypes.object.isRequired, // passed from parent    
     }
     
-    const {post,newVote,actionType} =  props ;
-    const {id, voteScore} = post  ;
+    const {comment,newVote,actionType} =  props ;
+    const {id, voteScore} = comment  ;
     const stringId = id.toString();
    
     return (
@@ -39,7 +37,7 @@ function WidgetVoting(props){
 
 function mapDispatchToProps(dispatch){
     return{
-        newVote : (id, option, newScore,actionType)=> dispatch(postVote(id, option, newScore,actionType))
+        newVote : (id, option, newScore)=> dispatch(commentVote(id, option, newScore))
     }
 }
 function mapStateToProps(state,ownProps){
@@ -47,4 +45,4 @@ function mapStateToProps(state,ownProps){
     }
 }
 
-export default connect(null,mapDispatchToProps) (WidgetVoting);
+export default connect(null,mapDispatchToProps) (WidgetVotingComment);

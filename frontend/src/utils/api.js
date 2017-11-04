@@ -83,34 +83,73 @@ fetch(`${api}/posts/${id}`, {
 },
 }).then(res => res.json())
 
-  
+/***************************************************************** 
+  COMMENTS STUFF
+******************************************************************/
+
 export const fetchComments = (id) =>
-fetch(`${api}/posts/${id}/comments`, { headers })
+  fetch(`${api}/posts/${id}/comments`, { headers })
   .then(res => res.json())
+
+export const createComment = (comment,parentId) =>
+  fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },  
+    body: JSON.stringify({
+      id:  v4() ,
+      timestamp : Date.now(),
+      parentId : comment.parentId,
+      body: comment.body,
+      author :comment.author,
+    })
+  }).then(res => res.json())
+
+  
+export const commentVote = (id, option) =>
+fetch(`${api}/comments/${id}`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+},
+  body: JSON.stringify({
+    option 
+  })
+}).then(res => res.json())
+
+
+
+export const editComment = (values,id) =>
+
+fetch(`${api}/comments/${id}`, {
+  method: 'PUT',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },  
+  body: JSON.stringify({
+    timestamp : Date.now(),
+    body: values.body,  
+  })
+})
+
+
+
+export const commentDelete = id =>
+fetch(`${api}/comments/${id}`, {
+  method: 'DELETE',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+},
+}).then(res => res.json())
+
+
 /*
-GET /posts/:id/comments
-      USAGE:
-        Get all the comments for a single post
-
-    POST /comments
-      USAGE:
-        Add a comment to a post
-
-      PARAMS:
-        id: Any unique ID. As with posts, UUID is probably the best here.
-        timestamp: timestamp. Get this however you want.
-        body: String
-        author: String
-        parentId: Should match a post id in the database.
-
-    GET /comments/:id
-      USAGE:
-        Get the details for a single comment
-
-    POST /comments/:id
-      USAGE:
-        Used for voting on a comment.
-
+   
     PUT /comments/:id
       USAGE:
         Edit the details of an existing comment
@@ -122,4 +161,8 @@ GET /posts/:id/comments
     DELETE /comments/:id
       USAGE:
         Sets a comment's deleted flag to 'true'
+
+        GET /comments/:id
+      USAGE:
+        Get the details for a single comment
  */

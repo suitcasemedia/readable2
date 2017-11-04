@@ -1,14 +1,34 @@
 import React, {Component} from 'react'
 import {Field} from 'redux-form'
 import { reduxForm} from 'redux-form'
-import {Link,History    } from 'react-router-dom'
+import {Link ,Redirect   } from 'react-router-dom'
 import {connect} from 'react-redux'
-import {createPost} from '../actions'
+import {createPost} from '../actions/posts'
 import '../App.css'
 
 
 class CreatePost extends Component {
 
+  renderSelect(field){
+    const {meta : {touched , error}} = field;
+
+    return(
+        <div className="">
+            <label>{field.label}</label>
+            <select className="form-control form-control"  {...field.input}>
+                <option >please select a category</option>
+                <option value="udacity">Udacity</option>
+                <option value="redux">Redux</option>
+                <option value="react">React</option>
+            </select>  
+            <div className="text-help invalid-feedback">
+                { touched ? error : ''}
+            </div>
+        </div>
+
+    )
+
+  }
 
   renderField(field){
     const {meta : {touched , error}} = field;
@@ -33,7 +53,7 @@ class CreatePost extends Component {
 
 onSubmit(values){
   
-   this.props.createPost(values) 
+   this.props.createPost(values, this.props.actionType,()=>  this.props.redirectHome ? window.location.replace("/") : '' )
       
    // this.props.History.push('/')
 
@@ -59,16 +79,9 @@ render(){
                       name="title"
                       component={this.renderField}
                   />
-                   <Field
-                       label="Categories"
-                      name="category"
-                      component={this.renderField}
-                  />
-                  <Field name="category" label="category" component="select">
-                    <option />
-                    <option value="ff0000">Udacity</option>
-                    <option value="00ff00">Redux</option>
-                    <option value="0000ff">React</option>
+                  
+                  <Field name="category" label="Category" component={this.renderSelect}>
+                    
 
                
                 </Field>

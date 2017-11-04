@@ -5,7 +5,7 @@ import {RECEIVE_POSTS ,
         POST_VOTE ,
         POST_DELETE, 
         EDIT_POST
-        } from '../actions' ;
+        } from '../actions/posts' ;
 //maybe import lodash
 export default function(state = {}, action){
     switch (action.type){

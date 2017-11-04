@@ -1,6 +1,4 @@
 import * as readableAPIUtil from '../utils/api';
-import { normalize, schema } from 'normalizr';
-
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
 export const NEW_POST = "NEW_POST" ;
@@ -12,6 +10,9 @@ export const EDIT_POST = "EDIT_POST";
 export const RECEIVE_POST = "RECEIVE_POST";
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
 export const POST_DETAIL_VOTE = "POST_DETAIL_VOTE";
+export const POST_DETAIL_EDIT = "POST_DETAIL_EDIT";
+export const POST_DETAIL_DELETE = "POST_DETAIL_DELETE";
+export const POST_DETAIL_CREATE = "POST_DETAIL_CREATE";
 
 
 export const receivePost = post => ({
@@ -48,28 +49,31 @@ export const fetchComments = (id) => dispatch => (
 
 
 
-export const newPost = post => ({
-  type: NEW_POST,
+export const newPost = (post,type) => ({
+  //type: NEW_POST,
+  type,
   post
 })
-export const createPost = post => dispatch => (
+export const createPost = (post,type,callback) => dispatch => (
   readableAPIUtil
   .createPost(post)
-  .then(post => dispatch(newPost(post)))
+  .then(post => dispatch(newPost(post,type)))
+  .then(()=> callback())
 )
 
-export const editPostDispatch = (values,id) => ({
+export const editPostDispatch = (values,id,type) => ({
   
-    type: EDIT_POST,
+    //type: EDIT_POST,
+    type,
     values,
     id
    
   })
 
-export const editPostAsync = (values,id) => dispatch => (
+export const editPostAsync = (values,id,type) => dispatch => (
   readableAPIUtil
   .editPost(values,id)
-  .then(() => dispatch(editPostDispatch(values,id)))
+  .then(() => dispatch(editPostDispatch(values,id,type)))
 )
 
 export const receiveCategories = categories => ({
@@ -88,36 +92,38 @@ export const setActiveCategory = (category)=> dispatch =>({
       type: SET_CATEGORY,
       category   
 });
+
 export const newVote = (id, option , newScore,type) =>
-({
-    type,
-    id,
-    option,
-    newScore 
-})
+  ({
+      type,
+      id,
+      option,
+      newScore 
+  })
 
 export const postVote = (id, option, newScore, type) => dispatch =>{
+    (
+      readableAPIUtil
+          .postVote(id,option, newScore)
+          .then(() => dispatch(newVote(id,option,newScore,type)))
+    );
+  }
 
-(
-  readableAPIUtil
-      .postVote(id,option, newScore)
-      .then(() => dispatch(newVote(id,option,newScore,type)))
-);
-}
 
-
-export const postDeleted = id => ({
-  type : POST_DELETE,
+export const postDeleted = (id,type) => ({
+ // type : POST_DELETE,
+  type,
   id
 })
-export const postDelete = id => dispatch => {
+export const postDelete = (id,type ,callback)=> dispatch => {
   readableAPIUtil
       .postDelete(id)
-      .then(()=> dispatch(postDeleted(id)))
+      .then(()=> dispatch(postDeleted(id,type)))
+      .then(()=> callback())
 
 }
 export function setSortPostBy (sortType) {
-  console.log("sort type in the action =",sortType)
+ 
   return{
 
       type: SORT_POST_BY,

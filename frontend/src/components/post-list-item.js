@@ -1,44 +1,28 @@
 import React ,{Component}from 'react';
 import renderDate from '../utils/render-date';
 import {connect} from 'react-redux' ;
-import Modal from 'react-modal';
+//import Modal from 'react-modal';
 import Loading  from 'react-loading';
-import EditPost from './edit-post';
+//import EditPost from './edit-post';
 import {Link} from 'react-router-dom';
 import WidgetVoting from './widget-voting';
+import WidgetEditDelete from './widget-edit-delete'
 import {
     postVote,
-    newVote,
+   // newVote,
     postDelete,
     postDeleted
    
-    } from '../actions';
+    } from '../actions/posts';
 
 class PostListItem extends Component{
-    state = {
-        editPostModalOpen: false,
-       
-      }
-      openEditPostModal = () => {
-        console.log("should be open now")
-        this.setState(() => ({
-          editPostModalOpen: true,
-    
-         
-        }))
-      }
-      closeEditPostModal = () => {
-        console.log("should be closed now")
-        this.setState(() => ({
-          editPostModalOpen: false,
-          
-        }))
-      }
+   
 
     render(){
-        const {editPostModalOpen} = this.state
+       
 
-        const {post,newVote,dPost ,key} = this.props;
+        const {post,key, dPost } = this.props;
+       // const{newVote, } = this.props
         const {id,title,author,category,body,commentCount,voteScore,timestamp} = post;
     
         const stringId = id.toString()
@@ -49,15 +33,15 @@ class PostListItem extends Component{
         <div className="card u-faux-block-link p-3 m-t-1 ">
            
             <div className="card-body">
-                <div>
-                    
-                    <a href="#" onClick={(stringId)=>{ dPost(id) ;}} className="card-link d-block"><i className="fa fa-times fa-2x fa--purple float-right" aria-hidden="true"></i></a>
-                    <a href="#" onClick={ this.openEditPostModal }className="card-link d-block"><i className="fa fa-pencil-square-o fa-2x fa--purple float-right mr-2 " aria-hidden="true"></i></a>
-                    
-                </div>
-                <p className="card-subtitle mb-2 text-muted">{renderDate(new Date(timestamp))}
-                
-                </p>
+                <WidgetEditDelete 
+                    post={post}
+                    redirectHomeOnDelete={false}
+                    editActionType={"EDIT_POST"}
+                    deleteActionType={"POST_DELETE"} 
+                    post={post}
+                     
+                />
+                <p className="card-subtitle mb-2 text-muted">{renderDate(new Date(timestamp))}</p>
                 <h4 className="card-title">{title}</h4>
                 <p className="card-text">By {author}</p>
                 <p className="card-text">Category {category}</p>
@@ -71,17 +55,7 @@ class PostListItem extends Component{
             </div>
             
         </div>
-        <Modal
-          className='modal'
-          overlayClassName='overlay'
-          isOpen={editPostModalOpen}
-          onRequestClose={this.closeEditPostModal}
-          contentLabel='Modal'
-        >
         
-        <EditPost initialValues={this.props} id={stringId} closeModal={this.closeEditPostModal} />
-        
-        </Modal>
     </div>    
 
 

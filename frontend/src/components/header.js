@@ -1,8 +1,10 @@
 import React ,{Component} from 'react' ;
 import Modal from 'react-modal';
 import Loading  from 'react-loading';
-import CreatePost from './create-post'
-import {Link} from 'react-router-dom'
+import CreatePost from './create-post';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {createPost} from '../actions/posts';
 
 class Header extends Component {
   state = {
@@ -10,7 +12,6 @@ class Header extends Component {
    
   }
   openCreatePostModal = () => {
-    console.log("should be open now")
     this.setState(() => ({
       createPostModalOpen: true,
 
@@ -18,19 +19,24 @@ class Header extends Component {
     }))
   }
   closeCreatePostModal = () => {
-    console.log("should be closed now")
     this.setState(() => ({
       createPostModalOpen: false,
       
     }))
   }
   render(){
-  
+    const {actionType} = this.props;
     const {createPostModalOpen} = this.state
 
     return(
       <div>
       <nav className="navbar navbar-toggleable-md d-block pt-1 clearfix text-light bg-warning mb-4">
+        <ul className="nav float-left">
+          <li>
+            <Link to="/" >Home</Link>
+          
+          </li>
+        </ul>
         <ul className="nav float-right ">                                                          
           <li>
             <button  onClick={this.openCreatePostModal} className="btn btn-outline float-right" href="#">Create New Post <i className="fa fa-plus" aria-hidden="true"></i></button>
@@ -47,15 +53,16 @@ class Header extends Component {
           contentLabel='Modal'
         >
         
-        <CreatePost shutModal={()=>{this.closeCreatePostModal()}}  createPost={(data) =>
-            { this.props.newPost(data)
+        <CreatePost 
+           redirectHome={this.props.redirectHome}
+           shutModal={()=>{this.closeCreatePostModal()}} 
+           createPost={(data,actionType,callback) =>
+            { this.props.newPost(data,actionType,callback)
               this.closeCreatePostModal()
-             
-             // this.props.callback()
-              
-            }
-            
-         }/>
+             // this.props.callback()  
+            }}
+            actionType={actionType}
+         />
         
         </Modal>
       </div>
@@ -65,7 +72,12 @@ class Header extends Component {
     
 }
 
+function mapDispatchToProps(dispatch){
+  return{
+    newPost :(data,actionType,callback) => dispatch(createPost(data,actionType,callback)),
+   
+  }
+}
 
 
-
-export  default Header  ;
+export  default connect(null,mapDispatchToProps) (Header)  ;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {setActiveCategory} from '../actions'
+import {setActiveCategory} from '../actions/posts'
 import {connect} from 'react-redux';
 
 

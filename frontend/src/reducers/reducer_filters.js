@@ -1,4 +1,4 @@
-import {SORT_POST_BY} from '../actions';
+import {SORT_POST_BY} from '../actions/posts';
 //maybe import lodash
 export default function(state = {sortPostBy: "most-votes"}, action){
     switch (action.type){

@@ -1,4 +1,4 @@
-import {RECEIVE_CATEGORIES,SET_CATEGORY} from '../actions';
+import {RECEIVE_CATEGORIES,SET_CATEGORY} from '../actions/posts';
 //maybe import lodash
 export default function(state = {}, action){
     switch (action.type){
