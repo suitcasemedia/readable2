@@ -23,6 +23,7 @@ const CommentsList = props=>{
                         <div className="card" key={comment.id}>
                             <div className="card-body">
                                 <p className="card-text m-1 p-1">{comment.body}</p>
+                                <p className="card-text m-1 p-1">By: {comment.author}</p>
                                 <WidgetVotingComment comment={comment}/>
                                 <WidgetEditDeleteComment comment={comment} />
                             </div> 
