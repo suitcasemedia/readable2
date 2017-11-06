@@ -5,6 +5,7 @@ import {fetchComments, fetchPost ,createPost} from '../actions/posts';
 import WidgetVoting from './widget-voting';
 import WidgetEditDelete from './widget-edit-delete';
 import CommentsWrapper from './comments/comments-wrapper';
+import _ from 'lodash';
 
 class Post extends Component{
     componentWillMount(){
@@ -16,12 +17,7 @@ class Post extends Component{
    
     renderPost(post){
             
-           if(post === undefined){          
-               return <div>
-                       <Header  actionType="POST_DETAIL_CREATE"/>
-                            <div className="container">Loading...</div>
-                       </div>
-           }
+          
            if(post.error){
             return (
                 <div>
@@ -71,13 +67,25 @@ class Post extends Component{
        render(){
 
         const {post,comments} = this.props;
-           return(
-           <div>
-                 {this.renderPost( post)}
-                
-                
-           </div>
-           )
+       // console.log("the post is", post.id)
+        if(post === undefined || _.has(post, 'id') == false){          
+            return <div>
+                    <Header  />
+                         <div className="container">Sorry we don't have that post</div>
+                    </div>
+        }
+        else{
+
+            return(
+                <div>
+                      {this.renderPost( post)}
+                     
+                     
+                </div>
+                )
+
+        }
+           
        }
 }
 
