@@ -6,4 +6,5 @@ Readable - submission for Redux React Nano Degree project
 * In another terminal window, use Create React App to scaffold out the front-end
 `
     - `cd frontend`
+    - `npm install`
     - `npm start`

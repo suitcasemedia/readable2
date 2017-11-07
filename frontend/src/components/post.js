@@ -35,6 +35,8 @@ class Post extends Component{
                         <Header redirectHome={true} actionType="POST_DETAIL_CREATE" />    
                             <div className="container mb-5">
                                 <h2>{post.title}</h2>
+                                <h6>Number of comments: {post.commentCount}</h6>
+
 
                                 <p>{post.body}</p>
                                 <div className="row">
