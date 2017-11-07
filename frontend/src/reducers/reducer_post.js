@@ -3,8 +3,8 @@ import {RECEIVE_POST,
         POST_DETAIL_EDIT ,
         POST_DETAIL_DELETE ,
         POST_DETAIL_CREATE ,
-
        } from '../actions/posts' ;
+import {NEW_COMMENT,DELETE_COMMENT} from '../actions/comments';
 export default function (state ={},action){
     switch (action.type){
         case RECEIVE_POST:{
@@ -29,10 +29,27 @@ export default function (state ={},action){
             return{
                 ...state, post: { ...post, title ,body }
             }
-            
+        }
 
+        case  NEW_COMMENT :{
+            const {post} = state;
+            const {commentCount} = post;
+            const newCommentCount = commentCount + 1;
+            return{
+                ...state, post: { ...post, commentCount: newCommentCount }
+            }
 
         }
+        case DELETE_COMMENT:{
+            const {post} = state;
+            const {commentCount} = post;
+            const newCommentCount = commentCount - 1;
+            return{
+                ...state, post: { ...post, commentCount: newCommentCount }
+            }
+
+        }
+        
         case POST_DETAIL_DELETE :{
 
         }
