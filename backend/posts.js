@@ -1,338 +1,140 @@
-const clone = require('clone');
+const clone = require('clone')
 
-let db = {};
+let db = {}
 
-const article1 = {
-  id: 1,
-  title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-  body: [
-    {
-      type: 'heading',
-      model: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Etiam ornare nulla in sem pharetra, vel varius magna tempus. Praesent pulvinar eget dolor vitae elementum. Donec id velit at sem gravida tristique non vitae lorem.',
-      },
-    },
-    {
-      type: 'image',
-      model: {
-        url: 'https://picsum.photos/640/420/?random',
-        altText:
-          'Vestibulum pellentesque laoreet urna, eget dignissim lorem maximus vel',
-        height: '420',
-        width: '640',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Nulla tortor nunc, posuere eu purus eget, ultricies ullamcorper sapien. Duis viverra lectus eget dolor gravida rhoncus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce molestie, odio at mattis auctor, mauris lectus luctus risus, eget pulvinar tortor erat a est.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Mauris accumsan maximus enim, eleifend consectetur turpis molestie malesuada. Proin vulputate dui non mattis venenatis. Nam ornare sapien eget nibh placerat, faucibus dapibus lacus consectetur.',
-      },
-    },
-    {
-      type: 'list',
-      model: {
-        type: 'unordered',
-        items: [
-          'Vestibulum viverra viverra ullamcorper',
-          'Aenean ut felis hendrerit, scelerisque est sed, rhoncus sem',
-        ],
-      },
-    },
-  ],
-};
-
-const article2 = {
-  id:2,
-  title: 'Praesent bibendum nec velit a fringilla. Nulla facilisi',
-  body: [
-    {
-      type: 'heading',
-      model: {
-        text: 'Nam eu varius magna, vel molestie diam',
-      },
-    },
-    {
-      type: 'image',
-      model: {
-        url: 'https://picsum.photos/640/420/?random',
-        altText:
-          'Vestibulum pellentesque laoreet urna, eget dignissim lorem maximus vel',
-        height: '420',
-        width: '640',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Integer lobortis, magna et tempor facilisis, arcu dui finibus mauris, pellentesque fringilla massa sem non justo. Phasellus vel arcu eu eros commodo egestas at non dui. Ut ultricies quis nunc ut commodo',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Aenean justo urna, tempor vitae consectetur nec, ornare eget nunc. Duis ornare ipsum in quam auctor feugiat. Vestibulum sapien metus, rutrum et mattis ut, tincidunt in dolor. Praesent semper laoreet augue. Etiam lacinia hendrerit euismod.',
-      },
-    },
-    {
-      type: 'image',
-      model: {
-        url: 'https://picsum.photos/640/420/?random',
-        altText:
-          'Curabitur dictum leo bibendum lacus ultrices fringilla et quis justo',
-        height: '420',
-        width: '640',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Morbi venenatis aliquam cursus. Sed eros elit, consequat id faucibus vel, interdum fringilla massa.',
-      },
-    },
-    {
-      type: 'image',
-      model: {
-        url: 'https://picsum.photos/640/420/?random',
-        altText:
-          'Curabitur dictum leo bibendum lacus ultrices fringilla et quis justo',
-        height: '420',
-        width: '640',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Morbi venenatis aliquam cursus. Sed eros elit, consequat id faucibus vel, interdum fringilla massa.',
-      },
-    },
-  ],
-};
-
-const article3 = {
-  id:3,
-  title:
-    'Vestibulum posuere orci ullamcorper nisi porta, sit amet tempus nibh porta',
-  body: [
-    {
-      type: 'heading',
-      model: {
-        text:
-          'Donec est neque, vulputate vitae magna non, aliquam semper lectus',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Nam sed tempus lectus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam sodales efficitur fermentum. Phasellus lacinia tempus odio, non mattis tellus pretium ac. Nulla facilisi. Donec tempor orci ipsum, eu euismod massa aliquet in. Fusce pretium lectus vitae dui pulvinar, vel fermentum elit porta.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Donec iaculis volutpat consequat. Pellentesque et lobortis tellus. In mattis, diam a tempus fringilla, augue orci tincidunt nunc, et dictum lorem eros non ante.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Cras dolor tellus, condimentum eu aliquet nec, facilisis a eros. Morbi sed tincidunt urna.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Praesent feugiat rutrum lobortis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'In imperdiet commodo nisl nec iaculis. Vivamus nunc purus, vulputate eget dapibus in, mattis sit amet tellus. Donec quis sapien a odio vestibulum egestas vel a magna.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Cras id condimentum dolor. Vestibulum risus leo, viverra a mi laoreet, vestibulum aliquam odio. Pellentesque aliquam placerat dolor vitae malesuada. Ut eget pretium tellus, cursus finibus ligula. Sed eros diam, porta sit amet urna eget, pretium dignissim magna. Curabitur imperdiet pharetra lectus ac venenatis.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Donec at tincidunt mauris, id sagittis erat. Nunc mi nisi, pellentesque et rutrum quis, congue non elit. Nullam convallis sapien quis tellus imperdiet iaculis.',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Vivamus sollicitudin, diam non semper molestie, nisi nunc efficitur neque, id iaculis nibh ipsum sed quam. Etiam consequat tristique mi ac lacinia. Etiam leo nulla, faucibus et lobortis et, semper et quam. Cras vehicula quam non condimentum laoreet.',
-      },
-    },
-  ],
-};
-
-const article4 = {
-  id:4,
-  title: 'Maecenas venenatis lorem ut erat dictum, sed varius est porta',
-  body: [
-    {
-      type: 'heading',
-      model: {
-        text: 'Maecenas venenatis lorem ut erat dictum, sed varius est porta',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Donec et fermentum elit, in aliquet massa. Suspendisse mollis tristique vulputate. Ut congue, quam quis volutpat egestas, nisl sem tempus urna, quis consequat arcu leo vitae turpis.',
-      },
-    },
-    {
-      type: 'list',
-      model: {
-        type: 'unordered',
-        items: [
-          'Donec commodo ipsum id tellus cursus, vel fermentum elit venenatis',
-          'Nullam pulvinar orci felis, eget maximus ex imperdiet accumsan',
-          'Nulla ut lectus at est fringilla pellentesque',
-          'Duis elementum feugiat lacus non condimentum',
-        ],
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text: 'Nunc auctor porttitor est, sed laoreet tortor mattis eget.',
-      },
-    },
-    {
-      type: 'list',
-      model: {
-        type: 'unordered',
-        items: [
-          'Etiam ultrices libero eget orci maximus luctus',
-          'Sed at luctus diam, eget tincidunt arcu',
-        ],
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Cras sodales odio et elit scelerisque, at aliquam elit facilisis. Suspendisse erat erat, egestas sed vehicula ac, finibus non velit. Curabitur fermentum iaculis velit eget semper.',
-      },
-    },
-  ],
-};
-
-const article5 = {
-  id:5,
-  title: 'Nulla nibh erat, pharetra at ultricies nec, tincidunt luctus arcu',
-  body: [
-    {
-      type: 'heading',
-      model: {
-        text:
-          'Nulla nibh erat, pharetra at ultricies nec, tincidunt luctus arcu',
-      },
-    },
-    {
-      type: 'image',
-      model: {
-        url: 'https://picsum.photos/640/420/?random',
-        altText:
-          'Donec purus augue, lobortis et velit maximus, rutrum scelerisque ipsum',
-        height: '420',
-        width: '640',
-      },
-    },
-    {
-      type: 'image',
-      model: {
-        url: 'https://picsum.photos/640/420/?random',
-        altText: 'Etiam at nisl diam',
-        height: '420',
-        width: '640',
-      },
-    },
-    {
-      type: 'paragraph',
-      model: {
-        text:
-          'Suspendisse id erat a nibh rutrum consectetur. Ut porttitor arcu id nibh pellentesque, et laoreet sapien accumsan. Phasellus quis finibus ipsum. Cras malesuada eu arcu sed laoreet. Nulla egestas ac eros vel eleifend. Nam porta ornare nisl, quis gravida dolor sagittis a.',
-      },
-    },
-  ],
-};
-
-let defaultData = {1:article1, 2:article2, 3:article3, 4:article4, 5:article5};
-
-
-function getData(token) {
-  let data = db[token];
-  if (data == null) {
-    data = db[token] = clone(defaultData);
+const defaultData = {
+  "8xf0y6ziyjabvozdd253nd": {
+    id: '8xf0y6ziyjabvozdd253nd',
+    timestamp: 1467166872634,
+    title: 'Udacity is the best place to learn React',
+    body: 'Everyone says so after all.',
+    author: 'thingtwo',
+    category: 'react',
+    voteScore: 6,
+    deleted: false,
+    commentCount: 2
+  },
+  "6ni6ok3ym7mf1p33lnez": {
+    id: '6ni6ok3ym7mf1p33lnez',
+    timestamp: 1468479767190,
+    title: 'Learn Redux in 10 minutes!',
+    body: 'Just kidding. It takes more than 10 minutes to learn technology.',
+    author: 'thingone',
+    category: 'redux',
+    voteScore: -5,
+    deleted: false,
+    commentCount: 0
   }
-  return data;
 }
 
-function get(token, id) {
-  return new Promise(res => {
-    const posts = getData(token);
-    res(posts[id].deleted ? {} : posts[id]);
-  });
+function getData (token) {
+  let data = db[token]
+  if (data == null) {
+    data = db[token] = clone(defaultData)
+  }
+  return data
 }
 
-function getAll(token) {
-  return new Promise(res => {
-    const posts = getData(token);
-    let keys = Object.keys(posts);
-    let filtered_keys = keys.filter(key => !posts[key].deleted);
-    res(filtered_keys.map(key => posts[key]));
-  });
+function getByCategory (token, category) {
+  return new Promise((res) => {
+    let posts = getData(token)
+    let keys = Object.keys(posts)
+    let filtered_keys = keys.filter(key => posts[key].category === category && !posts[key].deleted)
+    res(filtered_keys.map(key => posts[key]))
+  })
 }
 
-function rank(token, newOrder) {
-  return new Promise(res => {
-    const posts = newOrder
-
-    defaultData  = newOrder;
-    res(posts);
-  });
+function get (token, id) {
+  return new Promise((res) => {
+    const posts = getData(token)
+    res(
+      posts[id].deleted
+        ? {}
+        : posts[id]
+    )
+  })
 }
 
+function getAll (token) {
+  return new Promise((res) => {
+    const posts = getData(token)
+    let keys = Object.keys(posts)
+    let filtered_keys = keys.filter(key => !posts[key].deleted)
+    res(filtered_keys.map(key => posts[key]))
+  })
+}
 
+function add (token, post) {
+  return new Promise((res) => {
+    let posts = getData(token)
+
+    posts[post.id] = {
+      id: post.id,
+      timestamp: post.timestamp,
+      title: post.title,
+      body: post.body,
+      author: post.author,
+      category: post.category,
+      voteScore: 1,
+      deleted: false,
+      commentCount: 0
+    }
+
+    res(posts[post.id])
+  })
+}
+
+function vote (token, id, option) {
+  return new Promise((res) => {
+    let posts = getData(token)
+    post = posts[id]
+    switch(option) {
+        case "upVote":
+            post.voteScore = post.voteScore + 1
+            break
+        case "downVote":
+            post.voteScore = post.voteScore - 1
+            break
+        default:
+            console.log(`posts.vote received incorrect parameter: ${option}`)
+    }
+    res(post)
+  })
+}
+
+function disable (token, id) {
+    return new Promise((res) => {
+      let posts = getData(token)
+      posts[id].deleted = true
+      res(posts[id])
+    })
+}
+
+function edit (token, id, post) {
+    return new Promise((res) => {
+        let posts = getData(token)
+        for (prop in post) {
+            posts[id][prop] = post[prop]
+        }
+        res(posts[id])
+    })
+}
+
+function incrementCommentCounter(token, id, count) {
+  const data = getData(token)
+  if (data[id]) {
+    data[id].commentCount += count
+  }
+}
 
 module.exports = {
   get,
   getAll,
-  rank,
-};
+  getByCategory,
+  add,
+  vote,
+  disable,
+  edit,
+  getAll,
+  incrementCommentCounter
+}
