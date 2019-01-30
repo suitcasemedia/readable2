@@ -1,30 +1,42 @@
 import * as readableAPIUtil from '../utils/api';
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
-export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
-export const NEW_POST = "NEW_POST" ;
 export const POST_VOTE = "POST_VOTE" ;
-export const POST_DELETE = "POST_DELETE";
-export const SORT_POST_BY = "SORT_POST_BY";
-export const SET_CATEGORY = "SET_CATEGORY";
-export const EDIT_POST = "EDIT_POST";
-export const RECEIVE_POST = "RECEIVE_POST";
-export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
-export const POST_DETAIL_VOTE = "POST_DETAIL_VOTE";
-export const POST_DETAIL_EDIT = "POST_DETAIL_EDIT";
-export const POST_DETAIL_DELETE = "POST_DETAIL_DELETE";
-export const POST_DETAIL_CREATE = "POST_DETAIL_CREATE";
+export const GET_NEXT_ID = "GET_NEXT_ID";
+export const RESET = "RESET";
+export const MOVE_TO_RANKINGS = "MOVE_TO_RANKINGS";
+export const UPDATE_RANK_FRONT_END = "UPDATE_RANK_FRONT_END";
+export const NEW_RANK = "NEW_RANK";
 
+//Fetch post
+export const FETCH_POST = 'FETCH_POST';
+export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS';
+export const FETCH_POST_FAILURE = 'FETCH_POST_FAILURE';
+export const RESET_ACTIVE_POST = 'RESET_ACTIVE_POST';
 
-export const receivePost = post => ({
-  type: RECEIVE_POST,
-  post 
-});
-export const fetchPost = (id) => dispatch => (
+export const FETCH_POSTS = 'FETCH_POSTS';
+export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
+export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
+
+export const updateRankFrontEnd = (source,destination) =>{
+  return{
+    type: UPDATE_RANK_FRONT_END,
+    source,
+    destination
+  }
+}
+
+export const rankPostsBackend = posts => dispatch => (
   readableAPIUtil
-      .fetchPost(id)
-      .then(post => dispatch(receivePost(post)))
-);
+  .rank(posts)
+  .then(posts => dispatch(newRank()))
+)
 
+export const newRank = () => ({
+  type: NEW_RANK,
+  
+})
+
+/*
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts 
@@ -35,110 +47,75 @@ export const fetchPosts = () => dispatch => (
       .then(posts => dispatch(receivePosts(posts)))
 );
 
-
-
-export const receiveComments = comments => ({
-  type: RECEIVE_COMMENTS,
-  comments
-});
-export const fetchComments = (id) => dispatch => (
-  readableAPIUtil
-      .fetchComments(id)
-      .then(comments => dispatch(receiveComments(comments)))
-);
-
-
-
-export const newPost = (post,type) => ({
-  //type: NEW_POST,
-  type,
-  post
-})
-export const createPost = (post,type,callback) => dispatch => (
-  readableAPIUtil
-  .createPost(post)
-  .then(post => dispatch(newPost(post,type)))
-  .then(()=> callback())
-)
-
-export const editPostDispatch = (values,id,type) => ({
-  
-    //type: EDIT_POST,
-    type,
-    values,
-    id
-   
-  })
-
-export const editPostAsync = (values,id,type) => dispatch => (
-  readableAPIUtil
-  .editPost(values,id)
-  .then(() => dispatch(editPostDispatch(values,id,type)))
-)
-
-export const receiveCategories = categories => ({
-  type: RECEIVE_CATEGORIES,
-  categories
-});
-
-export const fetchCategories = () => dispatch => (
-  readableAPIUtil
-      .fetchCategories()
-      .then(posts => dispatch(receiveCategories(posts)))
-);
-
-
-export const setActiveCategory = (category)=> dispatch =>({
-      type: SET_CATEGORY,
-      category   
-});
-
-export const newVote = (id, option , newScore,type) =>
-  ({
-      type,
-      id,
-      option,
-      newScore 
-  })
-
-export const postVote = (id, option, newScore, type) => dispatch =>{
-    (
-      readableAPIUtil
-          .postVote(id,option, newScore)
-          .then(() => dispatch(newVote(id,option,newScore,type)))
-    );
-  }
-
-
-export const postDeleted = (id,type) => ({
- // type : POST_DELETE,
-  type,
-  id
-})
-export const postDelete = (id,type ,callback)=> dispatch => {
-  readableAPIUtil
-      .postDelete(id)
-      .then(()=> dispatch(postDeleted(id,type)))
-      .then(()=> callback())
-
-}
-export function setSortPostBy (sortType) {
- 
-  return{
-
-      type: SORT_POST_BY,
-      sortType
-
-  }
-}
-
-/*
-export const addCommentToPost = ()=>{}
-export const addComments =() =>{}
-export const normalizeCommentsInPost = comments => (dispatch, getState) => {
-     Object.values(comments)
-    .forEach(comment => dispatch(addCommentToPost(comment.parentId, comment.id)))
-    dispatch(addComments(normalize(comments)))
-} 
-
 */
+
+
+export function fetchPosts() {
+  const request = readableAPIUtil.fetchPosts()
+
+  return {
+    type: FETCH_POSTS,
+    payload: request
+  };
+}
+
+export function fetchPostsSuccess(posts) {
+  return {
+    type: FETCH_POSTS_SUCCESS,
+    payload: posts
+  };
+}
+
+export function fetchPostsFailure(error) {
+  return {
+    type: FETCH_POSTS_FAILURE,
+    payload: error
+  };
+}
+
+
+export function fetchPost(id) {
+  const  request = readableAPIUtil.fetchPost(id);
+
+  return {
+    type: FETCH_POST,
+    payload: request
+  };
+}
+
+export function fetchPostSuccess(activePost) {
+  return {
+    type: FETCH_POST_SUCCESS,
+    payload: activePost.payload,
+  };
+}
+
+export function fetchPostFailure(error) {
+  return {
+    type: FETCH_POST_FAILURE,
+    payload: error
+  };
+}
+
+export function resetActivePost() {
+  return {
+    type: RESET_ACTIVE_POST
+  }
+}
+
+export const moveToRankings = () => ({type: MOVE_TO_RANKINGS})
+export const getNextId = () => ({type: GET_NEXT_ID})
+export const reset = () => ({type:RESET})
+
+
+
+
+
+
+
+
+
+
+
+
+
