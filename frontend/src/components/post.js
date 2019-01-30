@@ -1,109 +1,120 @@
-import React ,{Component}from 'react';
-import Header from './header';
-import {connect} from 'react-redux';
-import {fetchComments, fetchPost ,createPost} from '../actions/posts';
-import WidgetVoting from './widget-voting';
-import WidgetEditDelete from './widget-edit-delete';
-import CommentsWrapper from './comments/comments-wrapper';
-import _ from 'lodash';
+// middleware/api.js
+// @flow
+/* eslint-disable camelcase */
+import React, { Component } from 'react';
+import Header from './../containers/HeaderContainer';
+import { connect } from 'react-redux';
 
-class Post extends Component{
-    componentWillMount(){
-        const {id} = this.props.match.params ;
-        const {fetchPost ,fetchComments } = this.props ;
-        fetchPost(id) ;
-        fetchComments(id) ;
+import { Img } from 'react-image-loading';
+import RankPosts from './../containers/RankPostsContainer';
+
+type Props = {
+  currentId: number,
+  fetchPost: (currentId: number) => void,
+  history: any,
+  post: Article,
+  timeToRank: boolean,
+  fetching: boolean,
+  error: string,
+};
+
+type Article = {
+  id: number,
+  title: string,
+  body: Element[],
+ 
+
+};
+type Element = {
+  type: string,
+  model: any,
+};
+type State = {};
+class Post extends React.Component<Props, State> {
+  componentWillMount() {
+    const { currentId: id, fetchPost } = this.props;
+
+    id && fetchPost(id);
+    this.props.history.push(`/${this.props.currentId}`);
+  }
+  componentDidUpdate(prevProps: Props) {
+    // Typical usage (don't forget to compare props):
+
+    if (this.props.currentId !== prevProps.currentId) {
+      this.props.history.push(`/${this.props.currentId}`);
+      this.props.fetchPost(this.props.currentId);
     }
+  }
+
+  render() {
    
-    renderPost(post){
-            
-          
-           if(post.error){
-            return (
-                <div>
-                <Header  actionType="POST_DETAIL_CREATE"/>
-                     <div className="container">Sorry we couldn't find that post</div>
-                </div> 
-            ) 
-        }
-           else{
-            const {comments} = this.props;
-            //const {voteScore} = post;
-            //const {id} = post;
-               return(
-                    <div>
-                        <Header redirectHome={true} actionType="POST_DETAIL_CREATE" />    
-                            <div className="container mb-5">
-                                <h2>{post.title}</h2>
-                                <h6>Number of comments: {post.commentCount}</h6>
+    const { post, fetching, error } = this.props;
+    if (this.props.timeToRank) {
+      return <RankPosts />;
+    }
+    if (fetching) {
+      return (
+        <div>
+          <Header {...this.props} />
+          <h2>Loading...</h2>
+        </div>
+      );
+    }
 
-
-                                <p>{post.body}</p>
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        <WidgetVoting post={post} actionType={"POST_DETAIL_VOTE"}/>
-                        
-                                    </div>
-                                    <div className="col-md-4">
-                                    </div>
-                                    <div className="col-md-4">
-                                        <WidgetEditDelete 
-                                            redirectHomeOnDelete={true}
-                                            editActionType={"POST_DETAIL_EDIT"}
-                                            deleteActionType={"POST_DETAIL_DELETE"} 
-                                            post={post}
-                                        />
-                                    </div>
-                    
-                                </div>
-
-                            </div>
-                             <CommentsWrapper parentId={post.id} comments={comments} />
-                   </div>     
-               )
-           } 
-           
-            
-       }
-
-       render(){
-
-        const {post,comments} = this.props;
-       // console.log("the post is", post.id)
-        if(post === undefined || _.has(post, 'id') == false){          
-            return <div>
-                    <Header  />
-                         <div className="container">Sorry we don't have that post</div>
+    if (error) {
+      return (
+        <div>
+          <Header {...this.props} />
+          <h2>{error}</h2>
+        </div>
+      );
+    }
+    if (post) {
+      return (
+        <div>
+          <Header {...this.props} />
+          <h2 className="text-center pt-3">{post.title ? post.title : ''}</h2>
+          <div className="container">
+            {post &&
+              post.body &&
+              post.body.map(element => {
+                if (element && element.type === 'heading')
+                  return <h4 className="text-center">{element.model.text}</h4>;
+                if (element && element.type === 'paragraph')
+                  return <p> {element.model.text}</p>;
+                if (element && element.type === 'image')
+                  return (
+                    <div
+                      style={{
+                        margin: '50px',
+                        minHeight: 150,
+                        position: 'relative',
+                      }}
+                      className="image"
+                    >
+                      <Img
+                        src={element.model.url}
+                        alt={element.model.altText}
+                        width={'100%'}
+                        height={element.model.height}
+                      />
                     </div>
-        }
-        else{
-
-            return(
-                <div>
-                      {this.renderPost( post)}
-                     
-                     
-                </div>
-                )
-
-        }
-           
-       }
-}
-
-function mapDispatchToProps(dispatch){
-    return{
-        newPost: data =>dispatch(createPost(data)),
-        fetchPost : (id)=> dispatch(fetchPost(id)),
-       fetchComments : (id)=> dispatch(fetchComments(id))
+                  );
+                if (element && element.type === 'list')
+                  return (
+                    <ul>
+                      {element.model.items.map(item => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  );
+              })}
+          </div>
+        </div>
+      );
     }
-}
-function mapStateToProps({post, comments},ownProps){
-    return{
-        comments:comments.comments,
-        post : post.post,
-        id: ownProps.match.params.id
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps) (Post)
+    return null;
+  }
+}
+export default Post;
